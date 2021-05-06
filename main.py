@@ -6,12 +6,12 @@ import matplotlib.pyplot as plt
 import threading
 
 if __name__ == "__main__":
-    c_lib = load_dll(os.path.join(os.getcwd(),"Fourier.dll"))
+    c_lib = load_dll(os.path.join(os.getcwd(),"lib","Fourier","Debug","Fourier.dll"))
     
-    sizes = 2**np.array(range(1,11))
+    sizes = 2**np.array(range(10,14))
     times = {
         "C++ DFT":[],
-        # "C++ FFT":[],
+        "C++ FFT":[],
         "Numpy FFT":[]
     }
 
@@ -21,23 +21,23 @@ if __name__ == "__main__":
         times[label].append(time)
 
 
-    NUMBER_OF_RUNS = 1
+    NUMBER_OF_RUNS = 3
     for N in sizes:
         print(f"Generating Random data of {N} points...")
         x = random_complex_array(size=N,seed=0)
         
         t1 = threading.Thread(target=func_timer,args=(c_ft_wrapper,NUMBER_OF_RUNS,"C++ DFT",c_lib.DFT,x))
-        # t2 = threading.Thread(target=func_timer,args=(c_ft_wrapper,NUMBER_OF_RUNS,"C++ FFT",c_lib.FFT,x))
+        t2 = threading.Thread(target=func_timer,args=(c_ft_wrapper,NUMBER_OF_RUNS,"C++ FFT",c_lib.FFT,x))
         t3 = threading.Thread(target=func_timer,args=(np.fft.fft,NUMBER_OF_RUNS,"Numpy FFT",x))
         
         print(f"Computing Fourier Transform...")   
         t1.start()
-        # t2.start()
+        t2.start()
         t3.start()
         
         # Wait until all threads have finished
         t1.join()
-        # t2.join()
+        t2.join()
         t3.join()
         print()
     

@@ -27,7 +27,9 @@ def load_dll(path):
     return ctypes.CDLL(path)
 
 def c_ft_wrapper(Func,data):
-    
+    """
+    Return the Fourier Transform of data using a function loaded from a DLL.
+    """
     if data.size == 0:
         return data
 

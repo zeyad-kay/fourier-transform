@@ -4,9 +4,17 @@ import timeit
 import numpy as np
 import matplotlib.pyplot as plt
 import threading
+import sys,getopt
 
 if __name__ == "__main__":
-    c_lib = load_dll(os.path.join(os.getcwd(),"lib","Fourier","Debug","Fourier.dll"))
+    dll_path = os.path.join("lib","demo","Fourier.dll")
+    opts, args = getopt.getopt(sys.argv[1:], "", 
+                                   ["debug="])
+    for opt, arg in opts:
+        if opt == "--debug" and arg == "True":
+            dll_path = os.path.join("lib","Fourier","Debug","Fourier.dll")
+
+    c_lib = load_dll(os.path.join(os.getcwd(),dll_path))
     
     sizes = 2**np.array(range(10,14))
     times = {
@@ -21,7 +29,7 @@ if __name__ == "__main__":
         times[label].append(time)
 
 
-    NUMBER_OF_RUNS = 3
+    NUMBER_OF_RUNS = int(input("Enter Number of Runs: "))
     for N in sizes:
         print(f"Generating Random data of {N} points...")
         x = random_complex_array(size=N,seed=0)

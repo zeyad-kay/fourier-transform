@@ -60,7 +60,7 @@ def plot_times(sizes,times):
     ax.legend()
     plt.show()
 
-def regular(c_lib,sizes):
+def calc_mse(c_lib,sizes):
     """
     Run Fourier Transform functions once and 
     calculate the Mean Squared Error

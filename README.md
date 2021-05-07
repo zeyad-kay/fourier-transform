@@ -33,10 +33,17 @@ To run the demo, make sure you have Python installed then:
 4. Run the script with 
 [built DLL](#Build) (optional).
 ```
-> python main.py --debug=True
+> python main.py --debug
+```
+
+5. Run the script with the profiler
+(optional).
+```
+> python main.py --profiler
 ```
 
 # Output
-You should see in the console a prompt asking for the number of runs for profiling. Then Python will generate random data and compute the Fourier Transform using Numpy's implementation and the *DLL*'s implementations then print the time taken by each method to compute the specified runs.
+Python will generate random data and compute the Fourier Transform using Numpy's implementation and the *DLL*'s implementations then print the time taken by each method with the _Mean Squared Error_ between the C++ outputs. An interactive plot will appear comparing the time taken by each method with different number of points.
 
-On completion, an interactive plot will appear comparing the time taken by each method with different number of points.
+Enabling the *profiler* prompts the user for the number of runs on each method.
+On completion, 

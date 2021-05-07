@@ -1,9 +1,6 @@
 from utils import *
 import os
-import timeit
 import numpy as np
-import matplotlib.pyplot as plt
-import threading
 import sys,getopt
 
 if __name__ == "__main__":

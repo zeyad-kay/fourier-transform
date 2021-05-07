@@ -6,19 +6,30 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 def random_complex_array(size,seed=None):
-    """
-    Generate a random numpy complex array.
+    """Generate a random numpy complex array.
     Omitting seed parameter returns same random array.
-    """
+
+    Args:
+        size (integer): number of points
+        seed (integer, optional): seed for predicatble random data. Defaults to None.
+
+    Returns:
+        numpy array: array of complex data
+    """    
     if seed is not None:
         np.random.seed(seed)
     return np.random.rand(size).astype(np.double) + np.random.rand(size).astype(np.double)*1j
 
 def reshape_complex_array(arr):
-    """
-    Make numpy complex array compatible
+    """Make numpy complex array compatible
     with C++ STL complex type
-    """
+
+    Args:
+        arr (numpy array): array of complex data 
+
+    Returns:
+        numpy array: reshaped numpy array
+    """    
     new_np = []
     if arr.size == 0:
         return arr
@@ -28,13 +39,28 @@ def reshape_complex_array(arr):
     return np.array(new_np,dtype=np.double)
 
 def load_dll(path):
+    """Loads C library
+
+    Args:
+        path (string): path to DLL
+
+    Returns:
+        CDLL: Loaded DLL
+    """    
     return ctypes.CDLL(path)
 
 def c_ft_wrapper(Func,data):
     """
     Return the Fourier Transform of data using a function loaded from a DLL.
     Supported functions are DFT and FFT.
-    """
+    
+    Args:
+        Func (function): C fourier transform function 
+        data (numpy array): data to perform fourier transform
+
+    Returns:
+        numpy array: fourier transform of the data
+    """    
     if data.size == 0:
         return data
 
@@ -51,6 +77,12 @@ def c_ft_wrapper(Func,data):
     return np_result[:,0] + np_result[:,1]*1j
 
 def plot_times(sizes,times):
+    """Plot time and size
+
+    Args:
+        sizes (array): [description]
+        times (array): [description]
+    """    
     fig,ax = plt.subplots(1,1)
     fig.suptitle("Average Compute Time of Fourier Transform Algorithms for N Points")
     ax.set_xlabel("N")
@@ -61,10 +93,16 @@ def plot_times(sizes,times):
     plt.show()
 
 def calc_mse(c_lib,sizes):
-    """
-    Run Fourier Transform functions once and 
+    """Run Fourier Transform functions once and 
     calculate the Mean Squared Error
-    """
+
+    Args:
+        c_lib (CDLL): loaded C library
+        sizes (array): array of data sizes to compute fourier transform
+
+    Returns:
+        dictionary: dictionary of times of each method
+    """    
     times = {
         "C++ DFT":[],
         "C++ FFT":[],
@@ -95,9 +133,16 @@ def calc_mse(c_lib,sizes):
     return times
 
 def profile(c_lib,sizes,runs):
-    """
-    Profile Fourier Transform functions for a number of runs.
-    """
+    """Profile Fourier Transform functions for a number of runs.
+
+    Args:
+        c_lib (CDLL): loaded C library
+        sizes (array): array of data sizes to compute fourier transform
+        runs (integer): number of times to repeat the function
+
+    Returns:
+        dictionary: dictionary of times of each method
+    """    
     times = {
         "C++ DFT":[],
         "C++ FFT":[],

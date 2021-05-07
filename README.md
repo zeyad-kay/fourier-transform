@@ -46,4 +46,3 @@ To run the demo, make sure you have Python installed then:
 Python will generate random data and compute the Fourier Transform using Numpy's implementation and the *DLL*'s implementations then print the time taken by each method with the _Mean Squared Error_ between the C++ outputs. An interactive plot will appear comparing the time taken by each method with different number of points.
 
 Enabling the *profiler* prompts the user for the number of runs on each method.
-On completion, 

@@ -23,6 +23,7 @@ if __name__ == "__main__":
     if profiler:
         NUMBER_OF_RUNS = int(input("Enter Number of Runs: "))
         times = profile(c_lib,sizes,NUMBER_OF_RUNS)
+        mse = None
     else:
-        times = calc_mse(c_lib,sizes)
-    plot_times(sizes,times)
+        times,mse = calc_mse(c_lib,sizes)
+    plot_results(sizes,times,mse)

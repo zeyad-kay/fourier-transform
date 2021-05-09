@@ -76,20 +76,35 @@ def c_ft_wrapper(Func,data):
     # Make array compatible with numpy structure
     return np_result[:,0] + np_result[:,1]*1j
 
-def plot_times(sizes,times):
+def plot_results(sizes,times,mse=None):
     """Plot time and size
 
     Args:
-        sizes (array): [description]
-        times (array): [description]
-    """    
-    fig,ax = plt.subplots(1,1)
-    fig.suptitle("Average Compute Time of Fourier Transform Algorithms for N Points")
-    ax.set_xlabel("N")
-    ax.set_ylabel("Time [s]")
-    ax.grid(True)
-    [ax.plot(sizes,value,label=key) for key,value in times.items()]
-    ax.legend()
+        sizes (array): data sizes
+        times (dictionary): dictionary of times of each method
+        mse (array, optional): Mean Square Error of every size
+    """
+    if mse is not None:
+        fig,ax = plt.subplots(1,2)
+        fig.suptitle("Average Compute Time and Mean Square Error of Fourier Transform Algorithms for N Points")
+        ax[0].set_xlabel("N")
+        ax[1].set_xlabel("N")
+        ax[0].set_ylabel("Time [s]")
+        ax[1].set_ylabel("Mean Square Error")
+        ax[0].grid(True)
+        ax[1].grid(True)
+        [ax[0].plot(sizes,value,label=key) for key,value in times.items()]
+        ax[1].plot(sizes,mse)
+        ax[0].legend()
+    else:
+        fig,ax = plt.subplots(1,1)
+        fig.suptitle("Average Compute Time of Fourier Transform Algorithms for N Points")
+        ax.set_xlabel("N")
+        ax.set_ylabel("Time [s]")
+        ax.grid(True)
+        [ax.plot(sizes,value,label=key) for key,value in times.items()]
+        ax.legend()
+
     plt.show()
 
 def calc_mse(c_lib,sizes):
@@ -108,6 +123,7 @@ def calc_mse(c_lib,sizes):
         "C++ FFT":[],
         "Numpy FFT":[]
     }
+    mse = []
 
     def func_timer(func,label,*args):
         start = perf_counter()
@@ -127,10 +143,10 @@ def calc_mse(c_lib,sizes):
         c_fft = func_timer(c_ft_wrapper,"C++ FFT",c_lib.FFT,x)
         c_dft = func_timer(c_ft_wrapper,"C++ DFT",c_lib.DFT,x)
         MSE = np.square(np.subtract(c_fft,c_dft)).mean()
-
+        mse.append(MSE)
         print(f"Mean Squared Error: {MSE}")
         print()
-    return times
+    return times,np.abs(mse)
 
 def profile(c_lib,sizes,runs):
     """Profile Fourier Transform functions for a number of runs.

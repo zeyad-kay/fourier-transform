@@ -1,15 +1,15 @@
 # Fourier Transform
 This is a C++ implementation of the Discrete and Fast Fourier Transforms along with building the source into a *DLL* for consuming in other languages.
 
-There is also a python script just to demonstrate a proof of concept of how to use the *DLL* and comparing the speed of the algorithms with increasing the size of data.
+There is also a python script just to demonstrate a proof of concept on how to use the *DLL* and comparing the speed of the algorithms with increasing the size of data.
 
 __Disclaimer__: The *DLL* will probably not work on linux as *DLL* is Windows specific.
 
 # Build
-The repo already has the C++ source for the Fourier Transform and the *DLL* already generated in the *lib/demo* folder. So for only running the demo jump
+The repo already has the C++ source for the Fourier Transform and a 32-bit *DLL* already generated in the *lib/demo* folder. So for only running the demo jump
 [here](#Demo).
 
-For building the *DLL*, open the Visual Studio solution in the *lib/Fourier* folder, make your changes and build. You will find a *Fourier.dll* file in the *Debug* folder.
+For building the *DLL*, open the Visual Studio solution in the *lib/Fourier* folder, make your changes and build depending on your Python version (32 or 64 bit). You will find a *Fourier.dll* file in the *Debug* folder.
 
 # Demo
 To run the demo, make sure you have Python installed then:
@@ -29,6 +29,7 @@ To run the demo, make sure you have Python installed then:
 ```
 > python main.py
 ```
+In case there is an error, it is because the Python version and the *DLL* are incompatible (64-bit Python and 32-bit *DLL*). In that case, you will have to [build](#Build) a 64-bit version of the *DLL*.
 
 4. Run the script with 
 [built DLL](#Build) (optional).
